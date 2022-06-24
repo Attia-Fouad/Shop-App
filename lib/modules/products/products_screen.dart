@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
+import 'package:shop_app/modules/product_details/product_details_screen.dart';
 import '../../models/shop_app/categories_model.dart';
 import '../../models/shop_app/home_model.dart';
 import '../../shared/components/components.dart';
@@ -19,14 +20,14 @@ class ProductsScreen extends StatelessWidget {
         return Conditional.single(
           context: context,
           conditionBuilder: (BuildContext context) =>
-              ShopCubit.get(context).homeModel != null &&
+          ShopCubit.get(context).homeModel != null &&
               ShopCubit.get(context).categoriesModel != null,
           widgetBuilder: (BuildContext context) => productsBuilder(
               ShopCubit.get(context).homeModel,
               ShopCubit.get(context).categoriesModel,
               context),
           fallbackBuilder: (BuildContext context) =>
-              const Center(child: CircularProgressIndicator()),
+          const Center(child: CircularProgressIndicator()),
         );
       },
       listener: (context, state) {
@@ -43,7 +44,7 @@ class ProductsScreen extends StatelessWidget {
   }
 
   Widget productsBuilder(HomeModel? model, CategoriesModel? categoriesModel,
-          BuildContext context) =>
+      BuildContext context) =>
       SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
@@ -53,11 +54,11 @@ class ProductsScreen extends StatelessWidget {
               items: model!.data.banners
                   .map(
                     (e) => Image(
-                      image: NetworkImage(e.image),
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  )
+                  image: NetworkImage(e.image),
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              )
                   .toList(),
               options: CarouselOptions(
                 height: 250.0,
@@ -107,40 +108,45 @@ class ProductsScreen extends StatelessWidget {
                 crossAxisCount: 2,
                 children: List.generate(
                     model.data.products.length,
-                    (index) =>
-                        buildGridProduct(model.data.products[index], context)),
+                        (index) =>
+                        buildGridProduct(model.data.products[index], context,index)),
               ),
             ),
           ],
         ),
       );
-  Widget buildGridProduct(ProductsModel model, BuildContext context) =>
+  Widget buildGridProduct(ProductsModel model, BuildContext context,int index, ) =>
       Container(
         color: Colors.white,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Stack(
-              alignment: AlignmentDirectional.bottomStart,
-              children: [
-                Image(
-                  image: NetworkImage(model.image),
-                  width: double.infinity,
-                  height: 200,
-                ),
-                if (model.discount != 0)
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    color: Colors.red,
-                    child: const Text(
-                      'DISCOUNT',
-                      style: TextStyle(
-                        fontSize: 8,
-                        color: Colors.white,
+            InkWell(
+              onTap: (){
+                navigateTo(context, ProductDetailsScreen(index: index, model: model));
+              },
+              child: Stack(
+                alignment: AlignmentDirectional.bottomStart,
+                children: [
+                  Image(
+                    image: NetworkImage(model.image),
+                    width: double.infinity,
+                    height: 200,
+                  ),
+                  if (model.discount != 0)
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      color: Colors.red,
+                      child: const Text(
+                        'DISCOUNT',
+                        style: TextStyle(
+                          fontSize: 8,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(12.0),
@@ -186,9 +192,9 @@ class ProductsScreen extends StatelessWidget {
                         icon: CircleAvatar(
                           radius: 15,
                           backgroundColor:
-                              ShopCubit.get(context).favorites[model.id]!
-                                  ? defaultColor
-                                  : Colors.grey,
+                          ShopCubit.get(context).favorites[model.id]!
+                              ? defaultColor
+                              : Colors.grey,
                           child: const Icon(
                             Icons.favorite_border,
                             size: 14,
@@ -205,27 +211,27 @@ class ProductsScreen extends StatelessWidget {
         ),
       );
   Widget buildCategoryItem(DataModel model) => Stack(
-        alignment: AlignmentDirectional.bottomCenter,
-        children: [
-          Image(
-            image: NetworkImage(model.image),
-            height: 100,
-            width: 100,
-            fit: BoxFit.cover,
+    alignment: AlignmentDirectional.bottomCenter,
+    children: [
+      Image(
+        image: NetworkImage(model.image),
+        height: 100,
+        width: 100,
+        fit: BoxFit.cover,
+      ),
+      Container(
+        width: 100,
+        color: Colors.black.withOpacity(0.8),
+        child: Text(
+          model.name,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            color: Colors.white,
           ),
-          Container(
-            width: 100,
-            color: Colors.black.withOpacity(0.8),
-            child: Text(
-              model.name,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
-      );
+        ),
+      ),
+    ],
+  );
 }

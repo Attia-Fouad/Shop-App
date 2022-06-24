@@ -63,3 +63,8 @@ class ShopErrorUpdateUserState extends ShopStates {
   String? error;
   ShopErrorUpdateUserState({this.error});
 }
+
+class ShopSuccessAddItemToCartState extends ShopStates {}
+class ShopSuccessRemoveItemFromCartState extends ShopStates {}
+class ShopSuccessCalcTotalState extends ShopStates {}
+

@@ -132,7 +132,6 @@ class SettingsScreen extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          ShopCubit.get(context).changeBottom(2);
                         },
                         child: Container(
                           width: double.infinity,
@@ -145,12 +144,12 @@ class SettingsScreen extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: const [
-                                Icon(IconBroken.Heart),
+                                Icon(IconBroken.Add_User),
                                 SizedBox(
                                   width: 5,
                                 ),
                                 Text(
-                                  'Favorites',
+                                  'About Us',
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -163,7 +162,43 @@ class SettingsScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 100,),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          print(ShopCubit.get(context).cartItems!.length);
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          height: 45,
+                          decoration: BoxDecoration(
+                            color: Colors.black38,
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: const [
+                                Icon(IconBroken.Chat),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  'Contact With Us',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Spacer(),
+                                Icon(Icons.arrow_forward_ios),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 70,),
                       Align(
                         alignment: AlignmentDirectional.bottomCenter,
                         child:InkWell(
@@ -201,7 +236,6 @@ class SettingsScreen extends StatelessWidget {
                         ),
 
                       ),
-
                     ],
                   ),
                 ),

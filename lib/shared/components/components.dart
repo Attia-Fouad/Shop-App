@@ -327,7 +327,7 @@ Widget defaultFallback({
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       const Icon(
-        Icons.menu_outlined,
+        IconBroken.Buy,
         size: 100,
         color: Colors.black38,
       ),

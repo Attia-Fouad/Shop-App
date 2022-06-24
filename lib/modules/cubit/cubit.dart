@@ -23,6 +23,7 @@ class ShopCubit extends Cubit<ShopStates> {
   ShopCubit() : super(ShopInitialState());
   static ShopCubit get(context) => BlocProvider.of(context);
   int currentIndex = 0;
+  PageController pageController=PageController(initialPage: 0);
   List<Widget> bottomScreens = [
     const ProductsScreen(),
     const CategoriesScreen(),
@@ -36,9 +37,11 @@ class ShopCubit extends Cubit<ShopStates> {
     'Settings',
   ];
 
+  bool isFav=false;
 
   void changeBottom(int index) {
     currentIndex = index;
+
     emit(ShopChangeBottomNavState());
   }
 
@@ -111,7 +114,7 @@ class ShopCubit extends Cubit<ShopStates> {
     });
   }
 
-   FavoritesModel? favoritesModel;
+  FavoritesModel? favoritesModel;
   void getFavorites() {
     emit(ShopLoadingGetFavoritesState());
     DioHelper.getData(
@@ -174,4 +177,26 @@ class ShopCubit extends Cubit<ShopStates> {
       emit(ShopErrorUpdateUserState(error: error.toString()));
     });
   }
+
+  List<ProductsModel>? cartItems=[];
+  void addToCart(ProductsModel model)
+  {
+    cartItems!.add(model);
+    emit(ShopSuccessAddItemToCartState());
+  }
+  void removeFromCart(int index){
+    cartItems!.removeAt(index);
+    emit(ShopSuccessRemoveItemFromCartState());
+    calcTotal();
+  }
+
+  num price=0;
+   void calcTotal(){
+     price=0;
+    cartItems?.forEach((element) {
+      price=price+element.price;
+    });
+    emit(ShopSuccessCalcTotalState());
+  }
+
 }

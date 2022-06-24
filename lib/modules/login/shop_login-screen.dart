@@ -66,9 +66,9 @@ class ShopLoginScreen extends StatelessWidget {
                       children: [
                         const Center(
                           child: Image(
-                            image: AssetImage('assets/images/login2.jpg'),
-                            height: 170,
-                            width: 170,
+                            image: AssetImage('assets/images/login4.png'),
+                            height: 200,
+                            width: 200,
                           ),
                         ),
                         const Center(
